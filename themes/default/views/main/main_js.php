@@ -60,6 +60,7 @@ function smartColumns() {
 
 	// Find how many columns of 200px can fit per row / then round it down to a whole number
 	var colNum = <?php echo $blocks_per_row; ?>;
+    console.log(colNum);
 
 	// Get the width of the row and divide it by the number of columns it 
 	// can fit / then round it down to a whole number. This value will be
@@ -210,17 +211,18 @@ jQuery(function() {
 		url: reportsURL,
 		transform: false
 	}, true, true);
-
-
-	// Register the referesh timeline function as a callback
+	
+    // Register the referesh timeline function as a callback
 	map.register("filterschanged", refreshTimeline);
 	setTimeout(function() { refreshTimeline({
 		s: startTime,
 		e: endTime
 	}); }, 800);
 
-
-	// Category Switch Action
+    //Displays count of circles
+    setTimeout(function(){alert("Circle count is: " + $("circle").length);}, 4000);
+	
+    // Category Switch Action
 	$("ul#category_switch li > a").click(function(e) {
 		
 		var categoryId = this.id.substring(4);
@@ -243,8 +245,12 @@ jQuery(function() {
 		map.updateReportFilters({c: categoryId});
 
 		e.stopPropagation();
-		return false;
-	});
+    
+    //Displays count of circles
+    setTimeout(function(){alert("Circle count is: " + $("circle").length);}, 3000);
+    
+    return false;
+    });
 
 	// Layer selection
 	$("ul#kml_switch li > a").click(function(e) {
