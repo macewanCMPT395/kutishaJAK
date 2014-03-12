@@ -11,17 +11,11 @@ class analytics {
 
     public function analytic()
     {
-   //Hook into the main_sidebar event and call the analytics controller
-    // And the method analytics_page within the hello controller
-    Event::add('ushahidi_action.nav_main_tops', array($this, 'analytics_page'));
+   //Hook into the nav_main_top event and call the analytics controller
+    // And the method analytics_page within the analytics controller
+    Event::add('ushahidi_action.nav_main_top', array('Analytics_Controller', 'analytics_page'));
     }
 
-    public function analytics_page()
-    {
-
-//      grabs the view and display
-        view::factory('analytics/analytics_view')->render(TRUE);
-   }
 }
 
 // instatiation of hook
