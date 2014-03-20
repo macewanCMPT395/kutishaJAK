@@ -219,8 +219,6 @@ jQuery(function() {
 		e: endTime
 	}); }, 800);
 
-    //Displays count of circles
-    setTimeout(function(){alert("Circle count is: " + $("circle").length);}, 4000);
 	
     // Category Switch Action
 	$("ul#category_switch li > a").click(function(e) {
@@ -246,8 +244,6 @@ jQuery(function() {
 
 		e.stopPropagation();
     
-    //Displays count of circles
-    setTimeout(function(){alert("Circle count is: " + $("circle").length);}, 3000);
     
     return false;
     });
