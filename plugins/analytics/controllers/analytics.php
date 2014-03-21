@@ -15,7 +15,7 @@ class Analytics_Controller extends Main_Controller {
         $view = new View('analytics/test');
         $this->template->content = $view;
         //send in variables to the view
-        $view->heading = "sup bitch";
+        $view->heading = "hello world";
     }
 
     //call back function, places nav_button in nav_main_menu
