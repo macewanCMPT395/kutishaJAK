@@ -1,2 +1,4 @@
+<!--Analytics/ is the view folder, this calls main automaticall -->
 <li>
-<a href= <?php echo url::base() . 'plugins/analytics/views/analytics/page.html' ?> >Analytics</a></li>
+    <a href="<?php echo url::base() . 'analytics/'?>">Analytics</a>
+</li>
