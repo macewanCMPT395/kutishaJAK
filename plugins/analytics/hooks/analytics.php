@@ -13,7 +13,7 @@ class analytics {
     {
    //Hook into the nav_main_top event and call the analytics controller
     // And the method analytics_page within the analytics controller
-    Event::add('ushahidi_action.nav_main_top', array('Analytics_Controller', 'analytics_page'));
+       Event::add('ushahidi_action.nav_main_top', array('Analytics_Controller', 'nav_button'));
     }
 
 }
