@@ -23,7 +23,7 @@ class Analytics_Controller extends Main_Controller {
 
  public function test(){
     $view = View::factory('analytics/test');
-    $view->heading = "supbitch";
+    $view->heading = "MenuTest";
     $this->template->content = $view;
     //$this->template->content = new View('analytics/test');
 }
