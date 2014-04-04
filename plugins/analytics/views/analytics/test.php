@@ -10,7 +10,7 @@ Select your favorite browser:
 <select id="monthSel">
    <option value=0>ALL</option>
    <option value=1>January</option>
-   <option value=2 >February</option>  
+   <option value=2>February</option>  
    <option value=3>March</option>
    <option value=4>April</option>
    <option value=5>May</option>
@@ -21,7 +21,6 @@ Select your favorite browser:
    <option value=10>October</option>
    <option value=11>November</option>
    <option value=12>December</option>
-   <selected = 3>
    </select>
 
 <button onClick="GetSelectedItem();">Refine</button>
@@ -32,7 +31,55 @@ Select your favorite browser:
         var e = document.getElementById("monthSel");
         var strSel = "The Value is: " + e.options[e.selectedIndex].value + " and text is: " + e.options[e.selectedIndex].text;
         console.log(strSel);
+
+	$.getJSON("<?php echo url::base(TRUE) . 'api?task=version'?>", function(data) {
+	    $("#footer").prepend("hello " + data['payload']['version'][0]['version']);
+	  });
     }
+
+var year = [];
+
+$.getJSON("<?php echo url::base(TRUE) . 'api?task=incidents'?>", function(data) {
+    for (var i = 0; i < data['payload']['incidents'].length; i++) {
+      var tempYear = data['payload']['incidents'][i]['incident']['incidentdate'];
+      tempYear = tempYear.substring(0,4);
+      console.log(tempYear + "t");
+      if (year.length == 0) {
+	year.push(tempYear);
+      } else {
+	for (var j = 0; j <= year.length; j++) {
+	  var valExists = 0;
+	  if (tempYear == year[j]) {
+	    valExists = 1;
+	    break;
+	  }
+	}
+	if (valExists == 0) {
+	  year.push(tempYear);
+	} else {
+	  valExists = 0;
+	}
+      }
+    }
+    year.sort();
+    console.log(year.length);
+    for (var k = 0; k < year.length; k++) {
+      console.log(year[k]);
+    }
+    yearDropdown(year);
+ });
+
+function yearDropdown(arrayInput) {
+  var yearSelected = document.getElementById("selectYear");
+  for (var i = 0; i < arrayInput.length; i++) {
+    console.log(arrayInput[i] + "z");
+    var element = document.createElement("option");
+    element.textContent = arrayInput[i];
+    element.value = (i + 1);
+    yearSelected.appendChild(element);
+  }
+}
+
 </script>
 
 </form>
@@ -51,7 +98,7 @@ Select your favorite browser:
    * @return string
    *
    */
- function monthDropdown($name="month", $selected=null)
+function monthDropdown($name="year", $selected="All", $yearArray)
  {
    $dd = '<select name="'.$name.'" id="'.$name.'">';
 
@@ -87,8 +134,9 @@ Select your favorite browser:
 
 
 /*** example usage ***/
-$name = 'my_dropdown';
+$name = 'myYearDropdown';
 
-echo monthDropdown($name);
-
+//echo yearDropdown($name);
+echo '<select id="selectYear"><option value=0>All</option></select>';
+echo '<button onClick="GetSelectedItem();">Refine</button>';
                                                                                                                                                                                                                                                                                                                      ?>
