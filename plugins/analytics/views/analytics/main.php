@@ -1,73 +1,153 @@
 <div id="content">
-<div class = "content-bg">
-<div id="placeholder" style="width:600px;height:300px"></div>
-<div id="barholder" style="width:600px;height:300px"></div>
-<div id="pieholder" style="width:600px;height:300px"></div>
-<style type="text/css">
-#description {
-        margin: 15px 10px 20px 10px;
-            }
-</style>
+  <div class = "content-bg">
+
+
+  <!-- LINE GRAPH -->
+  <div>
+
+    <br>
+    <center>
+    <h1><font size="4">Line Graph Displaying Frequency of Each Category</font></h1>
+    <?php echo 'Year:<select id="selectYear1"><option value=0>ALL</option></select> &nbsp Month:';?>
+
+    <select id="selectMonth1">
+      <option value=0>ALL</option>
+      <option value=01>January</option>
+      <option value=02>February</option>
+      <option value=03>March</option>
+      <option value=04>April</option>
+      <option value=05>May</option>
+      <option value=06>June</option>
+      <option value=07>July</option>
+      <option value=08>August</option>
+      <option value=09>September</option>
+      <option value=10>October</option>
+      <option value=11>November</option>
+      <option value=12>December</option>
+    </select>
+
+    <?php echo '&nbsp <button onClick="GetSelectedItem(1);">Refine</button>';?>
+    </center>
+    <br>
+
+  </div>
+  <center><div id="placeholder" style="width:600px;height:300px"></div></center><br>
+
+
+  <!-- BAR GRAPH -->
+  <div>
+
+    <hr size="5" noshade>
+    <br>
+    <center>
+    <h1><font size="4">Bar Graph Displaying Frequency of Each Category</font></h1>
+    <?php echo 'Year:<select id="selectYear2"><option value=0>ALL</option></select> &nbsp Month:';?>
+
+    <select id="selectMonth2">
+      <option value=0>ALL</option>
+      <option value=01>January</option>
+      <option value=02>February</option>
+      <option value=03>March</option>
+      <option value=04>April</option>
+      <option value=05>May</option>
+      <option value=06>June</option>
+      <option value=07>July</option>
+      <option value=08>August</option>
+      <option value=09>September</option>
+      <option value=10>October</option>
+      <option value=11>November</option>
+      <option value=12>December</option>
+    </select>
+
+    <?php echo '&nbsp <button onClick="GetSelectedItem(2);">Refine</button>';?>
+    </center>
+    <br>
+
+  </div>
+  <center><div id="barholder" style="width:600px;height:300px"></div></center><br>
+
+
+  <!-- PIE CHART -->
+  <div>
+
+    <hr size="5" noshade>
+    <br>
+    <center>
+    <h1><font size="4">Pie Chart Displaying Frequency of Each Category</font></h1>
+    <?php echo 'Year:<select id="selectYear3"><option value=0>ALL</option></select> &nbsp Month:';?>
+
+    <select id="selectMonth3">
+      <option value=0>ALL</option>
+      <option value=01>January</option>
+      <option value=02>February</option>
+      <option value=03>March</option>
+      <option value=04>April</option>
+      <option value=05>May</option>
+      <option value=06>June</option>
+      <option value=07>July</option>
+      <option value=08>August</option>
+      <option value=09>September</option>
+      <option value=10>October</option>
+      <option value=11>November</option>
+      <option value=12>December</option>
+    </select>
+
+    <?php echo '&nbsp <button onClick="GetSelectedItem(3);">Refine</button>';?>
+    </center>
+    <br>
+
+  </div>
+  <center><div id="pieholder" style="width:600px;height:300px"></div></center><br>
+
+
+  <style type="text/css">
+  #description {
+    margin: 15px 10px 20px 10px;
+  }
+  </style>
+
+
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="../../excanvas.min.js"></script><![endif]-->
-  <script language="javascript" type="text/javascript" src="../plugins/analytics/libraries/flot/jquery.js"></script>
-  <script language="javascript" type="text/javascript" src="../plugins/analytics/libraries/flot/jquery.flot.js"></script>
-  <script language="javascript" type="text/javascript" src="../plugins/analytics/libraries/flot/jquery.flot.categories.js"></script>
-  <script language="javascript" type="text/javascript" src="../plugins/analytics/libraries/flot/jquery.flot.pie.js"></script>
-  <script type="text/javascript">
+<script language="javascript" type="text/javascript" src="../plugins/analytics/libraries/flot/jquery.js"></script>
+<script language="javascript" type="text/javascript" src="../plugins/analytics/libraries/flot/jquery.flot.js"></script>
+<script language="javascript" type="text/javascript" src="../plugins/analytics/libraries/flot/jquery.flot.categories.js"></script>
+<script language="javascript" type="text/javascript" src="../plugins/analytics/libraries/flot/jquery.flot.pie.js"></script>
+<script type="text/javascript">
 
-  $(function() {
+$(function() {
 
-      var d1 = [];
-      for (var i = 0; i < 14; i += 0.5) {
-        d1.push([i, Math.sin(i)]);
+    var d1 = [];
+    for (var i = 0; i < 14; i += 0.5) {
+      d1.push([i, Math.sin(i)]);
       }
 
-      var d2 = [[0, 3], [4, 8], [8, 5], [9, 13]];        
+    var d2 = [[0, 3], [4, 8], [8, 5], [9, 13]];        
 
-      // A null signifies separate line segments
-      var d3 = [[0, 12], [7, 12], null, [7, 2.5], [12, 2.5]];
+    // A null signifies separate line segments
+    var d3 = [[0, 12], [7, 12], null, [7, 2.5], [12, 2.5]];
 
-      $.plot("#placeholder", [ d1, d2, d3 ]);
+    $.plot("#placeholder", [ d1, d2, d3 ]);
 
-      // Add the Flot version string to the footer
-      //$("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
   });
 
-  $(function() {
+$(function() {
 
-      var data = [ ["January", 10], ["February", 8], ["March", 4], ["April", 13], ["May", 17], ["June", 9] ];
-      /*
-      var options = {
-        series: {
-	  bars: {
-            show: true,
-            barWidth: 0.5,
-            align: "center"
-          }
-        },
-        xaxis: {
-          mode: "categories"
-          tickLength: 0
-        }
-      }
-      */
+    var data = [ ["January", 10], ["February", 8], ["March", 4], ["April", 13], ["May", 17], ["June", 9] ];
 
-      $.plot("#barholder", [ data ], {
-        series: {
-          bars: {
-	    show: true,
-	    barWidth: 0.6,
-	    align: "center"
+    $.plot("#barholder", [ data ], {
+      series: {
+	bars: {
+	  show: true,
+	  barWidth: 0.6,
+	  align: "center"
 	  }
         },
-        xaxis: {
-          mode: "categories",
-          tickLength: 0
-        }
+      xaxis: {
+	mode: "categories",
+	tickLength: 0
+	}
       });
-        
-      // Add the Flot version string to the footer
-      //$("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
+
   });
 
 //Array for pie chart
@@ -76,54 +156,244 @@ var dataSet = [];
 $.getJSON("<?php echo url::base(TRUE) . 'api?task=incidents'?>", function(data){
 
     //Incidents is an array of incidents objects
-    for (var i=0; i<data['payload']['incidents'].length; i++){
-        //Categories is an array of Category objects
-        for (var j=0; j<data['payload']['incidents'][i]['categories'].length; j++){
-            //Each Incident has multiple Categorical Names
-            var title = data['payload']['incidents'][i]['categories'][j]['category']['title'];
-            var index = -1;
-            index = dataSet.map(function(e) { return e.label}).indexOf(title);
-            if(index === -1){   
-                dataSet.push({ label: title, data: 1 });
-            } else {
-                dataSet[index]['data']++;
-            }
-        }
+    for (var i = 0; i < data['payload']['incidents'].length; i++){
+      //Categories is an array of Category objects
+      for (var j = 0; j < data['payload']['incidents'][i]['categories'].length; j++){
+	//Each Incident has multiple Categorical Names
+	var title = data['payload']['incidents'][i]['categories'][j]['category']['title'];
+	var index = -1;
+	index = dataSet.map(function(e) { return e.label}).indexOf(title);
+	if(index === -1){   
+	  dataSet.push({ label: title, data: 1 });
+	} else {
+	  dataSet[index]['data']++;
+	}
+      }
     }
 
-//Pie Chart Code
-var pieholder = $("#pieholder");
+    //Pie Chart Code
+    var pieholder = $("#pieholder");
 
-  $(function() {
+    $(function() {
 
-      pieholder.unbind();
-      $.plot(pieholder, dataSet, {
-	series: {
-	  pie: { 
-	    show: true,
-	    radius: 1,
-      	    label: {
-	      threshold: 0.04,
+	pieholder.unbind();
+	$.plot(pieholder, dataSet, {
+	  series: {
+	    pie: { 
 	      show: true,
-       	      formatter: labelFormatter,
-	      background: {
-		opacity: 0.8
+	      radius: 1,
+	      label: {
+	        threshold: 0.04,
+		show: true,
+		formatter: labelFormatter,
+		background: {
+		  opacity: 0.8
+		  }
+		}
 	      }
+	    },
+	  legend: {
+	    show: false
 	    }
-	  }
-	},
-	legend: {
-	  show: false
-	}
+	  });
       });
+
   });
 
-});
+function labelFormatter(label, series)
+{
 
-function labelFormatter(label, series) {
-    return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
+  return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
+
 }
+
+function GetSelectedItem(num)
+{
+
+  var month = document.getElementById("selectMonth" + num);
+  var year = document.getElementById("selectYear" + num);
+  var yearValSelect = year.options[year.selectedIndex].value;
+  var yearTextSelect = year.options[year.selectedIndex].text;
+  var monthValSelect = month.options[month.selectedIndex].value;
+
+  if (num == 3) {
+
+    $('#pieholder').load("<?php echo url::base(TRUE) . 'analytics'?> #pieholder", function() {
+
+	var dataSet = [];
+
+	$.getJSON("<?php echo url::base(TRUE) . 'api?task=incidents'?>", function(data){
+
+	    if ((yearValSelect != 0) && (monthValSelect != 0)) {
+
+	      //Incidents is an array of incidents objects
+	      for (var i = 0; i < data['payload']['incidents'].length; i++) {
+		var tempDate = data['payload']['incidents'][i]['incident']['incidentdate'];
+		var tempYear = tempDate.substring(0,4);
+		var tempMonth = tempDate.substring(5,7);
+		if ((monthValSelect == tempMonth) && (yearTextSelect == tempYear)) {
+		  //Categories is an array of Category objects
+		  for (var j = 0; j < data['payload']['incidents'][i]['categories'].length; j++) {
+		    var title = data['payload']['incidents'][i]['categories'][j]['category']['title'];
+		    var index = -1;
+		    index = dataSet.map(function(e) { return e.label }).indexOf(title);
+		    if (index === -1) {   
+		      dataSet.push({ label: title, data: 1 });
+		    } else {
+		      dataSet[index]['data']++;
+		    }
+		  }
+		}
+	      }
+
+	    } else if ((yearValSelect == 0) && (monthValSelect != 0)) {
+
+	      //Incidents is an array of incidents objects
+	      for (var i = 0; i < data['payload']['incidents'].length; i++) {
+		var tempDate = data['payload']['incidents'][i]['incident']['incidentdate'];
+		var tempMonth = tempDate.substring(5,7);
+		if (monthValSelect ==  tempMonth) {
+		  //Categories is an array of Category objects
+		  for (var j = 0; j < data['payload']['incidents'][i]['categories'].length; j++) {
+		    var title = data['payload']['incidents'][i]['categories'][j]['category']['title'];
+		    var index = -1;
+		    index = dataSet.map(function(e) { return e.label }).indexOf(title);
+		    if (index === -1) {   
+		      dataSet.push({ label: title, data: 1 });
+		    } else {
+		      dataSet[index]['data']++;
+		    }
+		  }
+		}
+	      }
+
+	    } else if ((yearValSelect != 0) && (monthValSelect == 0)) {
+
+	      //Incidents is an array of incidents objects
+	      for (var i = 0; i < data['payload']['incidents'].length; i++) {
+		var tempDate = data['payload']['incidents'][i]['incident']['incidentdate'];
+		var tempYear = tempDate.substring(0,4);
+		if (yearTextSelect ==  tempYear) {
+		  //Categories is an array of Category objects
+		  for (var j = 0; j < data['payload']['incidents'][i]['categories'].length; j++) {
+		    var title = data['payload']['incidents'][i]['categories'][j]['category']['title'];
+		    var index = -1;
+		    index = dataSet.map(function(e) { return e.label }).indexOf(title);
+		    if (index === -1) {   
+		      dataSet.push({ label: title, data: 1 });
+		    } else {
+		      dataSet[index]['data']++;
+		    }
+		  }
+		}
+	      }
+
+	    } else {
+
+	      //Incidents is an array of incidents objects
+	      for (var i = 0; i < data['payload']['incidents'].length; i++) {
+		//Categories is an array of Category objects
+		for (var j = 0; j < data['payload']['incidents'][i]['categories'].length; j++) {
+		  //Each Incident has multiple Categorical Names
+		  var title = data['payload']['incidents'][i]['categories'][j]['category']['title'];
+		  var index = -1;
+		  index = dataSet.map(function(e) { return e.label}).indexOf(title);
+		  if(index === -1){   
+		    dataSet.push({ label: title, data: 1 });
+		  } else {
+		    dataSet[index]['data']++;
+		  }
+		}
+	      }
+	    }
+
+	    if (dataSet.length != 0) {
+
+	      //Pie Chart Code
+	      var pieholder = $("#pieholder");
+
+	      $(function() {
+
+		  pieholder.unbind();
+		  $.plot(pieholder, dataSet, {
+		    series: {
+		      pie: { 
+			show: true,
+			radius: 1,
+			label: {
+			  threshold: 0.04,
+			  show: true,
+			  formatter: labelFormatter,
+			  background: {
+			    opacity: 0.8
+			    }
+			  }
+			}
+		      },
+		    legend: {
+		      show: false
+		      }
+		    });
+		});
+
+	    } else {
+	      document.getElementById("pieholder").innerHTML="<br><br><br><br><br><h2><b><font color='red' size='2'>NO VALUES WERE FOUND FOR THE SELECTED DATE</b></font></h2>";
+
+	    }
+	  });	       
+      });
+
+  }
+
+}
+
+var yearArray = [];
+var graphCount = 3;
+
+$.getJSON("<?php echo url::base(TRUE) . 'json'?>", function(data) {
+
+    for (var i = 0; i < data['features'].length; i++) {
+      var tempYear = data['features'][i]['properties']['timestamp'];
+      var date = new Date(tempYear * 1000);
+      tempYear = date.getFullYear();
+      if (yearArray.length == 0) {
+	yearArray.push(tempYear);
+      } else {
+	for (var j = 0; j <= yearArray.length; j++) {
+	  var valExists = 0;
+	  if (tempYear == yearArray[j]) {
+	    valExists = 1;
+	    break;
+	  }
+	}
+	if (valExists == 0) {
+	  yearArray.push(tempYear);
+	} else {
+	  valExists = 0;
+	}
+      }
+    }
+    yearArray.sort();
+    for (var k = 1; k <= graphCount; k++) {
+      yearDropdown(yearArray, k);
+    }
+
+  });
+
+function yearDropdown(arrayInput, num)
+{
+
+  var yearSelected = document.getElementById("selectYear" + num);
+  for (var i = 0; i < arrayInput.length; i++) {
+    var element = document.createElement("option");
+    element.textContent = arrayInput[i];
+    element.value = (i + 1);
+    yearSelected.appendChild(element);
+  }
+
+}
+
 </script>
 
-</div>
+  </div>
 </div>
