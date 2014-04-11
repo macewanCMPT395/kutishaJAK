@@ -25,3 +25,9 @@ Here at the kutishaJAK headquarters, the ultimate goal of our project was to bri
 For more detailed information, please feel free to [visit our website!](http://macewancmpt395.github.io/kutishaJAK/ "kutishaJAK's Github Page")
 
 # <a name="install-guide"></a>Installation Guide
+######Step 1:
+Go to our github page [here](http://macewancmpt395.github.io/kutishaJAK/ "kutishaJAK's Github Page") and download the package
+######Step 2:
+Our repository contains a working version (2.7) of Ushahidi with the plugin (located in plugins/analytics) included.  Install the downloaded files onto your local machine.
+######Step 3:
+After the basic installation and setup of Ushahidi, using our plugin is very simple. If you do not already see the Analytics tab on the Main menu bar, all you have to do is login as an admin, go to the plugin page and activate the plugin.  Easy peasy!
