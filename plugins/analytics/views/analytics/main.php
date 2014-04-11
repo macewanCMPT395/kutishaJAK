@@ -1,39 +1,5 @@
 <div id="content">
   <div class = "content-bg">
-
-
-  <!-- LINE GRAPH -->
-  <div>
-
-    <br>
-    <center>
-    <h1><font size="4">Line Graph Displaying Frequency of Each Category</font></h1>
-    <?php echo 'Year:<select id="selectYear1"><option value=0>ALL</option></select> &nbsp Month:';?>
-
-    <select id="selectMonth1">
-      <option value=0>ALL</option>
-      <option value=01>January</option>
-      <option value=02>February</option>
-      <option value=03>March</option>
-      <option value=04>April</option>
-      <option value=05>May</option>
-      <option value=06>June</option>
-      <option value=07>July</option>
-      <option value=08>August</option>
-      <option value=09>September</option>
-      <option value=10>October</option>
-      <option value=11>November</option>
-      <option value=12>December</option>
-    </select>
-
-    <?php echo '&nbsp <button onClick="GetSelectedItem(1);">Refine</button>';?>
-    </center>
-    <br>
-
-  </div>
-  <center><div id="placeholder" style="width:600px;height:300px"></div></center><br>
-
-
   <!-- BAR GRAPH -->
   <div>
 
@@ -64,7 +30,7 @@
     <br>
 
   </div>
-  <center><div id="barholder" style="width:600px;height:300px"></div></center><br>
+  <center><div id="barholder" style="width:950px;height:400px"></div></center><br>
 
 
   <!-- PIE CHART -->
@@ -112,54 +78,69 @@
 <script language="javascript" type="text/javascript" src="../plugins/analytics/libraries/flot/jquery.flot.js"></script>
 <script language="javascript" type="text/javascript" src="../plugins/analytics/libraries/flot/jquery.flot.categories.js"></script>
 <script language="javascript" type="text/javascript" src="../plugins/analytics/libraries/flot/jquery.flot.pie.js"></script>
-<script type="text/javascript">
+      <script type="text/javascript">
+ 
+      var barholder = $("#barholder");
+var barOptions = { 
+series: {
+  bars: {
+    show: true,
+    barWidth: 0.8,
+    align: "center"
+  }
+},
+grid: {
+  hoverable: true
+},
+xaxis: {
+  mode: "categories",
+  tickLength: 0,
+  axisLabel:"Incident Categories"
+}
+};
 
-$(function() {
-
-    var d1 = [];
-    for (var i = 0; i < 14; i += 0.5) {
-      d1.push([i, Math.sin(i)]);
-      }
-
-    var d2 = [[0, 3], [4, 8], [8, 5], [9, 13]];        
-
-    // A null signifies separate line segments
-    var d3 = [[0, 12], [7, 12], null, [7, 2.5], [12, 2.5]];
-
-    $.plot("#placeholder", [ d1, d2, d3 ]);
-
-  });
-
-$(function() {
-
-    var data = [ ["January", 10], ["February", 8], ["March", 4], ["April", 13], ["May", 17], ["June", 9] ];
-
-    $.plot("#barholder", [ data ], {
-      series: {
-	bars: {
-	  show: true,
-	  barWidth: 0.6,
-	  align: "center"
-	  }
-        },
-      xaxis: {
-	mode: "categories",
-	tickLength: 0
+var pieholder = $("#pieholder");
+var pieOptions = {
+series: {
+  pie: { 
+    show: true,
+    radius: 1,
+    label: {
+      threshold: 0.04,
+      show: true,
+      formatter: labelFormatter,
+      background: {
+	opacity: 0.8
 	}
-      });
+      }
+  }
+},
+grid:{
+  hoverable: true
+},
+legend: {
+  show: false
+}
+};
 
-  });
+function pie(dataSet){
+  pieholder.unbind();
+  $.plot(pieholder, dataSet, pieOptions);
+}
 
-//Array for pie chart
-var dataSet = [];
+function bar(dataSet){
+  var barDataSet = [];
+  for (key in dataSet){
+    barDataSet.push([dataSet[key]['label'],dataSet[key]['data']]);
+  }
+  $.plot(barholder, [ barDataSet ], barOptions);
+}
 
+//Inital Page Load
 $.getJSON("<?php echo url::base(TRUE) . 'api?task=incidents'?>", function(data){
-
-    //Incidents is an array of incidents objects
+    var dataSet = [];
     for (var i = 0; i < data['payload']['incidents'].length; i++){
-      //Categories is an array of Category objects
       for (var j = 0; j < data['payload']['incidents'][i]['categories'].length; j++){
-	//Each Incident has multiple Categorical Names
 	var title = data['payload']['incidents'][i]['categories'][j]['category']['title'];
 	var index = -1;
 	index = dataSet.map(function(e) { return e.label}).indexOf(title);
@@ -170,183 +151,71 @@ $.getJSON("<?php echo url::base(TRUE) . 'api?task=incidents'?>", function(data){
 	}
       }
     }
-
-    //Pie Chart Code
-    var pieholder = $("#pieholder");
-
-    $(function() {
-
-	pieholder.unbind();
-	$.plot(pieholder, dataSet, {
-	  series: {
-	    pie: { 
-	      show: true,
-	      radius: 1,
-	      label: {
-	        threshold: 0.04,
-		show: true,
-		formatter: labelFormatter,
-		background: {
-		  opacity: 0.8
-		  }
-		}
-	      }
-	    },
-	  legend: {
-	    show: false
-	    }
-	  });
-      });
-
+    pie(dataSet);
+    bar(dataSet);
   });
+//End First Json
 
 function labelFormatter(label, series)
 {
-
   return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
-
 }
 
 function GetSelectedItem(num)
 {
-
   var month = document.getElementById("selectMonth" + num);
   var year = document.getElementById("selectYear" + num);
   var yearValSelect = year.options[year.selectedIndex].value;
   var yearTextSelect = year.options[year.selectedIndex].text;
   var monthValSelect = month.options[month.selectedIndex].value;
 
-  if (num == 3) {
-
-    $('#pieholder').load("<?php echo url::base(TRUE) . 'analytics'?> #pieholder", function() {
-
-	var dataSet = [];
-
-	$.getJSON("<?php echo url::base(TRUE) . 'api?task=incidents'?>", function(data){
-
-	    if ((yearValSelect != 0) && (monthValSelect != 0)) {
-
-	      //Incidents is an array of incidents objects
-	      for (var i = 0; i < data['payload']['incidents'].length; i++) {
-		var tempDate = data['payload']['incidents'][i]['incident']['incidentdate'];
-		var tempYear = tempDate.substring(0,4);
-		var tempMonth = tempDate.substring(5,7);
-		if ((monthValSelect == tempMonth) && (yearTextSelect == tempYear)) {
-		  //Categories is an array of Category objects
-		  for (var j = 0; j < data['payload']['incidents'][i]['categories'].length; j++) {
-		    var title = data['payload']['incidents'][i]['categories'][j]['category']['title'];
-		    var index = -1;
-		    index = dataSet.map(function(e) { return e.label }).indexOf(title);
-		    if (index === -1) {   
-		      dataSet.push({ label: title, data: 1 });
-		    } else {
-		      dataSet[index]['data']++;
-		    }
-		  }
-		}
-	      }
-
-	    } else if ((yearValSelect == 0) && (monthValSelect != 0)) {
-
-	      //Incidents is an array of incidents objects
-	      for (var i = 0; i < data['payload']['incidents'].length; i++) {
-		var tempDate = data['payload']['incidents'][i]['incident']['incidentdate'];
-		var tempMonth = tempDate.substring(5,7);
-		if (monthValSelect ==  tempMonth) {
-		  //Categories is an array of Category objects
-		  for (var j = 0; j < data['payload']['incidents'][i]['categories'].length; j++) {
-		    var title = data['payload']['incidents'][i]['categories'][j]['category']['title'];
-		    var index = -1;
-		    index = dataSet.map(function(e) { return e.label }).indexOf(title);
-		    if (index === -1) {   
-		      dataSet.push({ label: title, data: 1 });
-		    } else {
-		      dataSet[index]['data']++;
-		    }
-		  }
-		}
-	      }
-
-	    } else if ((yearValSelect != 0) && (monthValSelect == 0)) {
-
-	      //Incidents is an array of incidents objects
-	      for (var i = 0; i < data['payload']['incidents'].length; i++) {
-		var tempDate = data['payload']['incidents'][i]['incident']['incidentdate'];
-		var tempYear = tempDate.substring(0,4);
-		if (yearTextSelect ==  tempYear) {
-		  //Categories is an array of Category objects
-		  for (var j = 0; j < data['payload']['incidents'][i]['categories'].length; j++) {
-		    var title = data['payload']['incidents'][i]['categories'][j]['category']['title'];
-		    var index = -1;
-		    index = dataSet.map(function(e) { return e.label }).indexOf(title);
-		    if (index === -1) {   
-		      dataSet.push({ label: title, data: 1 });
-		    } else {
-		      dataSet[index]['data']++;
-		    }
-		  }
-		}
-	      }
-
-	    } else {
-
-	      //Incidents is an array of incidents objects
-	      for (var i = 0; i < data['payload']['incidents'].length; i++) {
-		//Categories is an array of Category objects
-		for (var j = 0; j < data['payload']['incidents'][i]['categories'].length; j++) {
-		  //Each Incident has multiple Categorical Names
-		  var title = data['payload']['incidents'][i]['categories'][j]['category']['title'];
-		  var index = -1;
-		  index = dataSet.map(function(e) { return e.label}).indexOf(title);
-		  if(index === -1){   
-		    dataSet.push({ label: title, data: 1 });
-		  } else {
-		    dataSet[index]['data']++;
-		  }
-		}
-	      }
-	    }
-
-	    if (dataSet.length != 0) {
-
-	      //Pie Chart Code
-	      var pieholder = $("#pieholder");
-
-	      $(function() {
-
-		  pieholder.unbind();
-		  $.plot(pieholder, dataSet, {
-		    series: {
-		      pie: { 
-			show: true,
-			radius: 1,
-			label: {
-			  threshold: 0.04,
-			  show: true,
-			  formatter: labelFormatter,
-			  background: {
-			    opacity: 0.8
-			    }
-			  }
-			}
-		      },
-		    legend: {
-		      show: false
-		      }
-		    });
-		});
-
-	    } else {
-	      document.getElementById("pieholder").innerHTML="<br><br><br><br><br><h2><b><font color='red' size='2'>NO VALUES WERE FOUND FOR THE SELECTED DATE</b></font></h2>";
-
-	    }
-	  });	       
-      });
-
+  if (num == 2){
+    var label = $('#barholder');
+    var label2 = '#barholder';
+  }else if (num == 3) {
+    var label = $('#pieholder');
+    var label2 = '#pieholder';
   }
+  label.load("<?php echo url::base(TRUE) . 'analytics'?> label2", function() {
+      var dataSet = [];
+      $.getJSON("<?php echo url::base(TRUE) . 'api?task=incidents'?>", function(data){
+	  //Incidents is an array of incidents objects
+	  for (var i = 0; i < data['payload']['incidents'].length; i++) {
+	    var tempDate = data['payload']['incidents'][i]['incident']['incidentdate'];
+	    var tempYear = tempDate.substring(0,4);
+	    var tempMonth = tempDate.substring(5,7);
+	    if ((monthValSelect == 0 || monthValSelect == tempMonth) && (yearValSelect == 0 || yearTextSelect == tempYear)) {
+	      //Categories is an array of Category objects
+	      for (var j = 0; j < data['payload']['incidents'][i]['categories'].length; j++) {
+		var title = data['payload']['incidents'][i]['categories'][j]['category']['title'];
+		var index = -1;
+		index = dataSet.map(function(e) { return e.label }).indexOf(title);
+		if (index === -1) {   
+		  dataSet.push({ label: title, data: 1 });
+		} else {
+		  dataSet[index]['data']++;
+		}
+	      }
+	    }
+	  }
 
+	  if (dataSet.length != 0) {
+	    if(num == 3){ 
+	      pie(dataSet);
+	    }else if(num == 2){
+	      bar(dataSet);
+	    }
+	  }else{
+	    if(num == 3) var warning = 'pieholder';
+	    if(num == 2) var warning = 'barholder';
+        
+	    document.getElementById(warning).innerHTML="<br><br><br><br><br><h2><b><font color='red' size='2'>NO VALUES WERE FOUND FOR THE SELECTED DATE</b></font></h2>";
+	  }
+	});	       
+    });
 }
 
+//Fill Year Drop Down
 var yearArray = [];
 var graphCount = 3;
 
@@ -374,7 +243,7 @@ $.getJSON("<?php echo url::base(TRUE) . 'json'?>", function(data) {
       }
     }
     yearArray.sort();
-    for (var k = 1; k <= graphCount; k++) {
+    for (var k = 2; k <= graphCount; k++) {
       yearDropdown(yearArray, k);
     }
 
