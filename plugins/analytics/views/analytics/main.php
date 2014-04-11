@@ -78,18 +78,69 @@
 <script language="javascript" type="text/javascript" src="../plugins/analytics/libraries/flot/jquery.flot.js"></script>
 <script language="javascript" type="text/javascript" src="../plugins/analytics/libraries/flot/jquery.flot.categories.js"></script>
 <script language="javascript" type="text/javascript" src="../plugins/analytics/libraries/flot/jquery.flot.pie.js"></script>
-<script type="text/javascript">
+      <script type="text/javascript">
+ 
+      var barholder = $("#barholder");
+var barOptions = { 
+series: {
+  bars: {
+    show: true,
+    barWidth: 0.8,
+    align: "center"
+  }
+},
+grid: {
+  hoverable: true
+},
+xaxis: {
+  mode: "categories",
+  tickLength: 0,
+  axisLabel:"Incident Categories"
+}
+};
 
+var pieholder = $("#pieholder");
+var pieOptions = {
+series: {
+  pie: { 
+    show: true,
+    radius: 1,
+    label: {
+      threshold: 0.04,
+      show: true,
+      formatter: labelFormatter,
+      background: {
+	opacity: 0.8
+	}
+      }
+  }
+},
+grid:{
+  hoverable: true
+},
+legend: {
+  show: false
+}
+};
+
+function pie(dataSet){
+  pieholder.unbind();
+  $.plot(pieholder, dataSet, pieOptions);
+}
+
+function bar(dataSet){
+  var barDataSet = [];
+  for (key in dataSet){
+    barDataSet.push([dataSet[key]['label'],dataSet[key]['data']]);
+  }
+  $.plot(barholder, [ barDataSet ], barOptions);
+}
 
 //Inital Page Load
-var dataSet = [];
 $.getJSON("<?php echo url::base(TRUE) . 'api?task=incidents'?>", function(data){
-
-    //Incidents is an array of incidents objects
+    var dataSet = [];
     for (var i = 0; i < data['payload']['incidents'].length; i++){
-      //Categories is an array of Category objects
       for (var j = 0; j < data['payload']['incidents'][i]['categories'].length; j++){
-	//Each Incident has multiple Categorical Names
 	var title = data['payload']['incidents'][i]['categories'][j]['category']['title'];
 	var index = -1;
 	index = dataSet.map(function(e) { return e.label}).indexOf(title);
@@ -100,57 +151,9 @@ $.getJSON("<?php echo url::base(TRUE) . 'api?task=incidents'?>", function(data){
 	}
       }
     }
-
-    //Pie Chart Code
-    var pieholder = $("#pieholder");
-	$(function() {
-      pieholder.unbind();
-	  $.plot(pieholder, dataSet, {
-	  series: {
-	    pie: { 
-	      show: true,
-	      radius: 1,
-	      label: {
-	        threshold: 0.04,
-		show: true,
-		formatter: labelFormatter,
-		background: {
-		  opacity: 0.8
-		  }
-		}
-	      }
-	    },
-	  legend: {
-	    show: false
-	    }
-        });
-	  });
-
-//Bar chart array
-var barDataSet = [];
-$(function() {
-for (key in dataSet){
-    barDataSet.push([dataSet[key]['label'],dataSet[key]['data']]);
-}
-
-  $.plot("#barholder", [ barDataSet ], {
-        series: {
-          bars: {
-	    show: true,
-	    barWidth: 0.7,
-	    align: "center"
-	  }
-        },
-        grid: {
-        hoverable: true
-        },
-        xaxis: {
-          mode: "categories",
-          tickLength: 0
-        }
-      });
+    pie(dataSet);
+    bar(dataSet);
   });
-});
 //End First Json
 
 function labelFormatter(label, series)
@@ -169,96 +172,47 @@ function GetSelectedItem(num)
   if (num == 2){
     var label = $('#barholder');
     var label2 = '#barholder';
- }else if (num == 3) {
-  var label = $('#pieholder');
+  }else if (num == 3) {
+    var label = $('#pieholder');
     var label2 = '#pieholder';
- }
-    label.load("<?php echo url::base(TRUE) . 'analytics'?> label2", function() {
-	var dataSet = [];
-	$.getJSON("<?php echo url::base(TRUE) . 'api?task=incidents'?>", function(data){
-
-//	    if ((yearValSelect != 0) && (monthValSelect != 0)) {
-
-	      //Incidents is an array of incidents objects
-	      for (var i = 0; i < data['payload']['incidents'].length; i++) {
-		var tempDate = data['payload']['incidents'][i]['incident']['incidentdate'];
-		var tempYear = tempDate.substring(0,4);
-		var tempMonth = tempDate.substring(5,7);
-		if ((monthValSelect == 0 || monthValSelect == tempMonth) && (yearValSelect == 0 || yearTextSelect == tempYear)) {
-		  //Categories is an array of Category objects
-		  for (var j = 0; j < data['payload']['incidents'][i]['categories'].length; j++) {
-		    var title = data['payload']['incidents'][i]['categories'][j]['category']['title'];
-		    var index = -1;
-		    index = dataSet.map(function(e) { return e.label }).indexOf(title);
-		    if (index === -1) {   
-		      dataSet.push({ label: title, data: 1 });
-		    } else {
-		      dataSet[index]['data']++;
-		    }
-		  }
+  }
+  label.load("<?php echo url::base(TRUE) . 'analytics'?> label2", function() {
+      var dataSet = [];
+      $.getJSON("<?php echo url::base(TRUE) . 'api?task=incidents'?>", function(data){
+	  //Incidents is an array of incidents objects
+	  for (var i = 0; i < data['payload']['incidents'].length; i++) {
+	    var tempDate = data['payload']['incidents'][i]['incident']['incidentdate'];
+	    var tempYear = tempDate.substring(0,4);
+	    var tempMonth = tempDate.substring(5,7);
+	    if ((monthValSelect == 0 || monthValSelect == tempMonth) && (yearValSelect == 0 || yearTextSelect == tempYear)) {
+	      //Categories is an array of Category objects
+	      for (var j = 0; j < data['payload']['incidents'][i]['categories'].length; j++) {
+		var title = data['payload']['incidents'][i]['categories'][j]['category']['title'];
+		var index = -1;
+		index = dataSet.map(function(e) { return e.label }).indexOf(title);
+		if (index === -1) {   
+		  dataSet.push({ label: title, data: 1 });
+		} else {
+		  dataSet[index]['data']++;
 		}
 	      }
-
-	    if (dataSet.length != 0) {
-      if(num == 3){  
-	      //Pie Chart Code
-	      var pieholder = $("#pieholder");
-
-	      $(function() {
-
-		  pieholder.unbind();
-		  $.plot(pieholder, dataSet, {
-		    series: {
-		      pie: { 
-			show: true,
-			radius: 1,
-			label: {
-			  threshold: 0.04,
-			  show: true,
-			  formatter: labelFormatter,
-			  background: {
-			    opacity: 0.8
-			    }
-			  }
-			}
-		      },
-		    legend: {
-		      show: false
-		      }
-		    });
-		});
-        }else if(num == 2){
-        var barDataSet = [];
-$(function() {
-for (key in dataSet){
-    barDataSet.push([dataSet[key]['label'],dataSet[key]['data']]);
-}
-
-  $.plot("#barholder", [ barDataSet ], {
-        series: {
-          bars: {
-	    show: true,
-	    barWidth: 0.7,
-	    align: "center"
-	  }
-        },
-        grid: {
-        hoverable: true
-        },
-        xaxis: {
-          mode: "categories",
-          tickLength: 0
-        }
-      });
-  });
-
-        }
-	    } else {
-	      document.getElementById("pieholder").innerHTML="<br><br><br><br><br><h2><b><font color='red' size='2'>NO VALUES WERE FOUND FOR THE SELECTED DATE</b></font></h2>";
-
 	    }
-	  });	       
-      });
+	  }
+
+	  if (dataSet.length != 0) {
+	    if(num == 3){ 
+	      pie(dataSet);
+	    }else if(num == 2){
+	      bar(dataSet);
+	    }
+	  }else{
+	    if(num == 3) var warning = 'pieholder';
+	    if(num == 2) var warning = 'barholder';
+        
+	    document.getElementById(warning).innerHTML="<br><br><br><br><br><h2><b><font color='red' size='2'>NO VALUES WERE FOUND FOR THE SELECTED DATE</b></font></h2>";
+	  }
+	});	       
+    });
 }
 
 //Fill Year Drop Down
