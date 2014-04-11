@@ -6,17 +6,10 @@
 ---
 
 # Table of Contents
- 
-* [Team Members](#team-members)
+
 * [Introduction](#introduction)
 * [Installation Guide](#install-guide)
- 
-# <a name="team-members"></a>Team Members & Contact Information
-* James Yoo
-  * Email: <jameswlyoo@gmail.com>
-  * Twitter: [@yooJWL](https://twitter.com/yooJWL "James' Twitter Feed")
-* "Alex Tai"
-* "Kari Bronson"
+* [Team Members & Contact Information](#team-members)
 
 # <a name="introduction"></a>Introduction
 #### The Ushahidi Analytics Initiative
@@ -31,3 +24,13 @@ Go to our github page [here](http://macewancmpt395.github.io/kutishaJAK/ "kutish
 Our repository contains a working version (2.7) of Ushahidi with the plugin (located in plugins/analytics) included.  Install the downloaded files onto your local machine.
 ######Step 3:
 After the basic installation and setup of Ushahidi, using our plugin is very simple. If you do not already see the Analytics tab on the Main menu bar, all you have to do is login as an admin, go to the plugin page and activate the plugin.  Easy peasy!
+
+# <a name="team-members"></a>Team Members & Contact Information
+* James Yoo
+  * Email: <jameswlyoo@gmail.com>
+  * Twitter: [@yooJWL](https://twitter.com/yooJWL "James' Twitter Feed")
+* Alex Tai
+  * Email: <taia3@mymacewan.ca>
+  * Blog: [Alex's Wordpress Blog](http://alextopen01.wordpress.com/)
+* Kari Bronson
+  * Email: <karibronson10@gmail.com>
